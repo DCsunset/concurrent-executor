@@ -1,4 +1,4 @@
-# pssh
+# cssh
 # Copyright (C) 2023 DCsunset
 #
 # This program is free software: you can redistribute it and/or modify

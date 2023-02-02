@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# pssh
+# cssh
 # Copyright (C) 2023 DCsunset
 #
 # This program is free software: you can redistribute it and/or modify
@@ -14,7 +14,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
-from pssh.cli import main
+from cssh.cli import main
 import asyncio
 
 asyncio.run(main())

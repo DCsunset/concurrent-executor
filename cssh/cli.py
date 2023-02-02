@@ -1,4 +1,4 @@
-# pssh
+# cssh
 # Copyright (C) 2023 DCsunset
 #
 # This program is free software: you can redistribute it and/or modify
@@ -18,7 +18,7 @@ import argparse
 
 async def main():
 	parser = argparse.ArgumentParser(
-		description="Control audio with ALSA API easily via CLI",
+		description="Executing commands using SSH concurrently on multiple hosts",
 		formatter_class=argparse.ArgumentDefaultsHelpFormatter
 	)
 	parser.add_argument("-H", "--hosts", nargs="+", required=True, help="a list of hosts to execute command on")
