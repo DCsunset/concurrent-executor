@@ -15,8 +15,11 @@
 from .executor import SshExecutor
 from aiostream import stream
 from functools import reduce
+from rich.console import Console
 import argparse
 import sys
+
+console = Console(highlight=False)
 
 async def main():
 	parser = argparse.ArgumentParser(
@@ -47,9 +50,9 @@ async def main():
 			host, out = host_out
 			out = out.decode().rstrip()
 			if is_stdout:
-				print(f"{host:{host_len}} | {out}")
+				console.print(f"[bright_black]{host:{host_len}} |[/bright_black] {out}")
 			else:
-				print(f"{host:{host_len}} x {out}")
+				console.print(f"[bright_black]{host:{host_len}}[/bright_black] [red]|[/red] {out}")
 	
 	# return code
 	ret = 0
