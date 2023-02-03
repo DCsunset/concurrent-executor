@@ -14,6 +14,7 @@
 
 from .executor import SshExecutor
 from aiostream import stream
+from functools import reduce
 import argparse
 import sys
 
@@ -33,6 +34,12 @@ async def main():
 
 	stdout = stream.map(executor.get_stdout(), lambda v: (v, True))
 	stderr = stream.map(executor.get_stderr(), lambda v: (v, False))
+
+	# The max host length (for padding)
+	host_len = 0
+	for h in args.hosts:
+		if len(h) > host_len:
+			host_len = len(h)
 	
 	# use async with to ensure it is cleaned up correctly
 	async with stream.merge(stdout, stderr).stream() as s:
@@ -40,9 +47,9 @@ async def main():
 			host, out = host_out
 			out = out.decode().rstrip()
 			if is_stdout:
-				print(f"{host} | {out}")
+				print(f"{host:{host_len}} | {out}")
 			else:
-				print(f"{host} x {out}")
+				print(f"{host:{host_len}} x {out}")
 	
 	# return code
 	ret = 0
