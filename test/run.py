@@ -24,4 +24,5 @@ sys.path.insert(0, str(directory.parent))
 from cssh.cli import main
 import asyncio
 
-asyncio.run(main())
+ret = asyncio.run(main())
+sys.exit(ret)

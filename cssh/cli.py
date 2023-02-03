@@ -44,6 +44,14 @@ async def main():
 			else:
 				print(f"{host} x {out}")
 	
+	# return code
+	ret = 0
 	# wait until all finished
-	await executor.wait()
+	ret_codes = await executor.wait()
 	stdin_awaitable.close()
+	for r in ret_codes:
+		# use the first non-zero code
+		if r != 0:
+			ret = r
+
+	return ret

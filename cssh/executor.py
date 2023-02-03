@@ -43,10 +43,9 @@ class SshExecutor:
 	Return a list of return codes
 	"""
 	async def wait(self) -> list[int]:
-		return_codes = await asyncio.gather(
+		return await asyncio.gather(
 			*map(lambda p: p.wait(), self.processes)
 		)
-		return return_codes
 
 	"""
 	Write data to all stdins
