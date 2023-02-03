@@ -12,6 +12,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+from ._version import __version__
 from .executor import SshExecutor
 from aiostream import stream
 from functools import reduce
@@ -28,6 +29,7 @@ async def main():
 	)
 	parser.add_argument("-H", "--hosts", nargs="+", required=True, help="a list of hosts to execute command on")
 	parser.add_argument("cmd", nargs="+", help="command to run")
+	parser.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
 	args = parser.parse_args()
 
 	executor = SshExecutor(args.hosts)
