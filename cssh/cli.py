@@ -15,6 +15,7 @@
 from .executor import SshExecutor
 from aiostream import stream
 import argparse
+import sys
 
 async def main():
 	parser = argparse.ArgumentParser(
@@ -27,7 +28,8 @@ async def main():
 
 	executor = SshExecutor(args.hosts)
 	await executor.run(" ".join(args.cmd))
-
+	# pipe stdin to all processes
+	stdin_awaitable = executor.pipe_stdin(sys.stdin)
 
 	stdout = stream.map(executor.get_stdout(), lambda v: (v, True))
 	stderr = stream.map(executor.get_stderr(), lambda v: (v, False))
@@ -41,3 +43,7 @@ async def main():
 				print(f"{host} | {out}")
 			else:
 				print(f"{host} x {out}")
+	
+	# wait until all finished
+	await executor.wait()
+	stdin_awaitable.close()

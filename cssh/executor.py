@@ -47,14 +47,34 @@ class SshExecutor:
 			*map(lambda p: p.wait(), self.processes)
 		)
 		return return_codes
-	
-	async def write_stdin(data):
-		awaitables = []
+
+	"""
+	Write data to all stdins
+	"""
+	async def write_stdin(self, data):
 		for p in self.processes:
 			p.stdin.write(data)
-			awaitables.append(p.stdin.drain())
+			# wait until all consumed
+		await asyncio.gather(*map(
+			lambda p: p.stdin.drain(),
+			self.hosts
+		))
 
-		await asyncio.gather(*awaitables)
+
+	"""
+	Use an stream (iterator) to pipe to all stdins
+	It can be async by setting asynchronous to True
+	"""
+	async def pipe_stdin(self, it, asynchronous=False):
+		if asynchronous:
+			async for data in it:
+				# wait until all stdins drain
+				await self.write_stdin(data)
+		else:
+			for data in it:
+				# wait until all stdins drain
+				await self.write_stdin(data)
+
 	
 	"""
 	Get a stream (async iterator) to lines in stdout: (host, stdout_line)
