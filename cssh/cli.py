@@ -25,14 +25,14 @@ console = Console(highlight=False)
 async def main():
 	parser = argparse.ArgumentParser(
 		description="Executing commands using SSH concurrently on multiple hosts",
-		formatter_class=argparse.ArgumentDefaultsHelpFormatter
 	)
 	parser.add_argument("-H", "--hosts", nargs="+", required=True, help="a list of hosts to execute command on")
+	parser.add_argument("-o", "--options", default="", help="extra options passed to ssh command. use a single string")
 	parser.add_argument("cmd", nargs="+", help="command to run")
 	parser.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
 	args = parser.parse_args()
 
-	executor = SshExecutor(args.hosts)
+	executor = SshExecutor(args.hosts, args.options)
 	await executor.run(" ".join(args.cmd))
 	# pipe stdin to all processes
 	stdin_awaitable = executor.pipe_stdin(sys.stdin)
