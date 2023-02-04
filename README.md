@@ -2,6 +2,8 @@
 
 [![PyPI](https://img.shields.io/pypi/v/concurrent-ssh)](https://pypi.org/project/concurrent-ssh/)
 
+Executing commands with ssh concurrently on multiple hosts using asyncio
+
 ## Installation
 
 ```sh
@@ -12,6 +14,11 @@ pip install git+https://github.com/DCsunset/concurrent-ssh
 ```
 
 ## Usage
+
+**Note**: ensure that `ssh` is in your `PATH` environment variables.
+
+### CLI
+
 
 Use `-H` or `--hosts` to specify the hosts to run the commands on:
 
@@ -24,6 +31,29 @@ cssh -o="-q -4" -H <host1> <host2> .... <host_n> -- <command>
 Note that `--` is necessary to separate the options and the command.
 For `-o/--options` to work correctly, use `=` to prevent it from being parsed as another option.
 
+### Library
+
+It can also be used as a library:
+
+```python
+import asyncio
+from cssh.executor import SshExecutor
+
+async def main():
+  hosts = ["host1", "host2"]
+  executor = SshExecutor(hosts)
+  # running concurrently
+  await executor.run("some_command --test")
+
+  # access stdout for all hosts (or stderr)
+  async for host, out in executor.stdout:
+    print(f"{host}: {out}")
+
+	# wait until all finished
+	ret_codes = await executor.wait()
+  
+asyncio.run(main())
+```
 
 ## Development
 
