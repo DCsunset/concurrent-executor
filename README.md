@@ -1,13 +1,13 @@
-# cssh
+# concurrent-ssh
 
-[![PyPI](https://img.shields.io/pypi/v/cssh)](https://pypi.org/project/cssh/)
+[![PyPI](https://img.shields.io/pypi/v/concurrent-ssh)](https://pypi.org/project/concurrent-ssh/)
 
 ## Installation
 
 ```sh
-pip install cssh
+pip install concurrent-ssh
 # Or from the latest GitHub version
-pip install git+https://github.com/DCsunset/cssh
+pip install git+https://github.com/DCsunset/concurrent-ssh
 
 ```
 
@@ -47,7 +47,7 @@ To deactivate, run `deactivate`.
 
 This project is licensed under AGPL-3.0. Copyright notice:
 
-    cssh
+    concurrent-ssh
     Copyright (C) 2023 DCsunset
 
     This program is free software: you can redistribute it and/or modify

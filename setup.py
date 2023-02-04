@@ -1,4 +1,4 @@
-# cssh
+# concurrent-ssh
 # Copyright (C) 2023 DCsunset
 #
 # This program is free software: you can redistribute it and/or modify
@@ -28,7 +28,7 @@ with open(readme, "r") as f:
 	long_description = f.read()
 
 setup(
-	name="cssh",
+	name="concurrent-ssh",
 	version=main_ns["__version__"],
 	description="Executing commands using SSH concurrently on multiple hosts",
 	package_dir={"cssh": "cssh"},
@@ -37,14 +37,15 @@ setup(
 	author="DCsunset",
 	author_email='DCsunset@protonmail.com',
 	license="AGPL-3.0",
-	url="https://github.com/DCsunset/cssh",
+	url="https://github.com/DCsunset/concurrent-ssh",
 	install_requires=["aiostream", "rich"],
 	packages=["cssh"],
 	scripts=["bin/cssh"],
 	classifiers=[
 		"Environment :: Console",
 		"Topic :: System :: Networking",
-		'Intended Audience :: End Users/Desktop',
+		"Topic :: Software Development :: Libraries",
+		'Intended Audience :: Developers',
 		'Programming Language :: Python',
 		"License :: OSI Approved :: GNU Affero General Public License v3"
 	]
