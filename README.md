@@ -1,5 +1,30 @@
 # cssh
 
+[![PyPI](https://img.shields.io/pypi/v/cssh)](https://pypi.org/project/cssh/)
+
+## Installation
+
+```sh
+pip install cssh
+# Or from the latest GitHub version
+pip install git+https://github.com/DCsunset/cssh
+
+```
+
+## Usage
+
+Use `-H` or `--hosts` to specify the hosts to run the commands on:
+
+```sh
+cssh -H <host1> <host2> .... <host_n> -- <command>
+# Or pass extra ssh options
+cssh -o="-q -4" -H <host1> <host2> .... <host_n> -- <command>
+```
+
+Note that `--` is necessary to separate the options and the command.
+For `-o/--options` to work correctly, use `=` to prevent it from being parsed as another option.
+
+
 ## Development
 
 To set up the development environment,
