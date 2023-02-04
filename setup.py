@@ -38,6 +38,7 @@ setup(
 	author_email='DCsunset@protonmail.com',
 	license="AGPL-3.0",
 	url="https://github.com/DCsunset/cssh",
+	install_requires=["aiostream", "rich"],
 	packages=["cssh"],
 	scripts=["bin/cssh"],
 	classifiers=[
