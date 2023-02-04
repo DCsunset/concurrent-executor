@@ -49,8 +49,8 @@ async def main():
   async for host, out in executor.stdout:
     print(f"{host}: {out}")
 
-	# wait until all finished
-	ret_codes = await executor.wait()
+  # wait until all finished
+  ret_codes = await executor.wait()
   
 asyncio.run(main())
 ```
