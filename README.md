@@ -19,7 +19,6 @@ pip install git+https://github.com/DCsunset/concurrent-ssh
 
 ### CLI
 
-
 Use `-H` or `--hosts` to specify the hosts to run the commands on:
 
 ```sh
@@ -30,6 +29,10 @@ cssh -o="-q -4" -H <host1> <host2> .... <host_n> -- <command>
 
 Note that `--` is necessary to separate the options and the command.
 For `-o/--options` to work correctly, use `=` to prevent it from being parsed as another option.
+
+The standard input (stdin) of the `cssh` process is piped to the stdin of every spawned processes.
+Upon receiving one `SIGINT` (including keyboard interrupt) or `SIGTERM`, `cssh` will send `SIGTERM` to all spawned processes.
+Upon receiving more than one of them, `cssh` will instead send `SIGKLL` to kill all spawned processes.
 
 ### Library
 

@@ -14,6 +14,7 @@
 
 from ._version import __version__
 from .executor import SshExecutor
+from .signal_handler import SignalHandler
 from aiostream import stream
 from functools import reduce
 from rich.console import Console
@@ -34,6 +35,18 @@ async def main():
 
 	executor = SshExecutor(args.hosts, args.options)
 	await executor.run(" ".join(args.cmd))
+	
+	def signal_callback(counter):
+		if counter == 1:
+			console.print(f"[bright_yellow]Terminating all processes...[/bright_yellow]")
+			executor.terminate()
+		else:
+			# send more than twice to kill all processes
+			console.print(f"[bright_red]Killing all processes...[/bright_red]")
+			executor.kill()
+			
+	_signal_handler = SignalHandler(signal_callback)
+
 	# pipe stdin to all processes
 	stdin_awaitable = executor.pipe_stdin(sys.stdin)
 
