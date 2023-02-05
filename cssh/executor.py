@@ -48,7 +48,7 @@ class SshExecutor:
 		)
 
 	"""
-	Write data to all stdins
+	Write data to all stdin
 	"""
 	async def write_stdin(self, data):
 		for p in self.processes:
@@ -56,23 +56,34 @@ class SshExecutor:
 			# wait until all consumed
 		await asyncio.gather(*map(
 			lambda p: p.stdin.drain(),
-			self.hosts
+			self.processes
+		))
+
+	"""
+	Close stdin of all processes
+	"""
+	async def close_stdin(self):
+		async def close_process_stdin(p):
+			p.stdin.close()
+			await p.stdin.wait_closed()
+			
+		await asyncio.gather(*map(
+			close_process_stdin,
+			self.processes
 		))
 
 
 	"""
-	Use an stream (iterator) to pipe to all stdins
-	It can be async by setting asynchronous to True
+	Use a stream reader (or async iterator) to pipe to all stdin
 	"""
-	async def pipe_stdin(self, it, asynchronous=False):
-		if asynchronous:
-			async for data in it:
-				# wait until all stdins drain
-				await self.write_stdin(data)
-		else:
-			for data in it:
-				# wait until all stdins drain
-				await self.write_stdin(data)
+	async def pipe_stdin(self, reader):
+		# print("Reading from stdin")
+		async for data in reader:
+			# wait until all stdins drain
+			await self.write_stdin(data)
+		
+		# close stdin when no more input
+		await self.close_stdin()
 
 	
 	"""
