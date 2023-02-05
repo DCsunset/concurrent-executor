@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.2.0](https://github.com/DCsunset/concurrent-ssh/compare/v0.1.0...v0.2.0) (2023-02-05)
+
+
+### Features
+
+* handle signals to terminate or kill processes ([276db94](https://github.com/DCsunset/concurrent-ssh/commit/276db9477a959c88ef13379dbdde7728d1186c02))
+
+
+### Bug Fixes
+
+* avoid writing to finished process to prevent deadlock ([357eaf7](https://github.com/DCsunset/concurrent-ssh/commit/357eaf7e3eb1118328fc4626e60638054fb63e2e))
+* supoprt piping stdin correctly ([fd2c021](https://github.com/DCsunset/concurrent-ssh/commit/fd2c02132e896e94c735fea50b17519371cd0935))
+
 ## 0.1.0 (2023-02-04)
 
 
