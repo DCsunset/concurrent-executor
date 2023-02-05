@@ -15,10 +15,12 @@
 from ._version import __version__
 from .executor import SshExecutor
 from .signal_handler import SignalHandler
+from .io import get_stdin_stream
 from aiostream import stream
 from functools import reduce
 from rich.console import Console
 import argparse
+import asyncio
 import sys
 
 console = Console(highlight=False)
@@ -44,11 +46,12 @@ async def main():
 			# send more than twice to kill all processes
 			console.print(f"[bright_red]Killing all processes...[/bright_red]")
 			executor.kill()
-			
+
 	_signal_handler = SignalHandler(signal_callback)
 
-	# pipe stdin to all processes
-	stdin_awaitable = executor.pipe_stdin(sys.stdin)
+	# pipe stdin to all processes in the background
+	stdin_reader = await get_stdin_stream()
+	stdin_task = asyncio.create_task(executor.pipe_stdin(stdin_reader))
 
 	stdout = stream.map(executor.get_stdout(), lambda v: (v, True))
 	stderr = stream.map(executor.get_stderr(), lambda v: (v, False))
@@ -73,7 +76,8 @@ async def main():
 	ret = 0
 	# wait until all finished
 	ret_codes = await executor.wait()
-	stdin_awaitable.close()
+	if not stdin_task.done():
+		stdin_task.cancel()
 	for r in ret_codes:
 		# use the first non-zero code
 		if r != 0:
