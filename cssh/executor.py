@@ -51,11 +51,15 @@ class SshExecutor:
 	Write data to all stdin
 	"""
 	async def write_stdin(self, data):
-		for p in self.processes:
-			p.stdin.write(data)
-			# wait until all consumed
+		async def write_to_process(p):
+			# make sure the process is still running before sending data
+			if p.returncode is None:
+				p.stdin.write(data)
+				# wait until consumed
+				await p.stdin.drain()
+
 		await asyncio.gather(*map(
-			lambda p: p.stdin.drain(),
+			write_to_process,
 			self.processes
 		))
 
@@ -71,7 +75,6 @@ class SshExecutor:
 			close_process_stdin,
 			self.processes
 		))
-
 
 	"""
 	Use a stream reader (or async iterator) to pipe to all stdin
