@@ -58,6 +58,8 @@ async def main():
 asyncio.run(main())
 ```
 
+See more usage in `cssh/cli.py`.
+
 ## Development
 
 To set up the development environment,
