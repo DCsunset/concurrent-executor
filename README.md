@@ -31,8 +31,11 @@ Note that `--` is necessary to separate the options and the command.
 For `-o/--options` to work correctly, use `=` to prevent it from being parsed as another option.
 
 The standard input (stdin) of the `cssh` process is piped to the stdin of every spawned processes.
-Upon receiving one `SIGINT` (including keyboard interrupt) or `SIGTERM`, `cssh` will send `SIGTERM` to all spawned processes.
-Upon receiving more than one of them, `cssh` will instead send `SIGKLL` to kill all spawned processes.
+
+`cssh` can handle signals as follows:
+
+* Upon receiving one `SIGINT` (including keyboard interrupt) or `SIGTERM`, `cssh` will send `SIGTERM` to all spawned processes.
+* Upon receiving more than one of them, `cssh` will instead send `SIGKILL` to kill all spawned processes.
 
 ### Library
 
