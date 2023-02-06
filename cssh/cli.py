@@ -24,6 +24,7 @@ import asyncio
 import sys
 
 console = Console(highlight=False)
+err_console = Console(highlight=False, stderr=True)
 
 async def main():
 	parser = argparse.ArgumentParser(
@@ -70,7 +71,7 @@ async def main():
 			if is_stdout:
 				console.print(f"[bright_black]{host:{host_len}} |[/bright_black] {out}")
 			else:
-				console.print(f"[bright_black]{host:{host_len}}[/bright_black] [red]|[/red] {out}")
+				err_console.print(f"[bright_black]{host:{host_len}}[/bright_black] [bright_red]|[/bright_red] {out}")
 	
 	# return code
 	ret = 0
