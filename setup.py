@@ -39,6 +39,7 @@ setup(
 	license="AGPL-3.0",
 	url="https://github.com/DCsunset/concurrent-ssh",
 	install_requires=["aiostream", "rich"],
+	python_requires=">=3.9",
 	packages=["cssh"],
 	scripts=["bin/cssh"],
 	classifiers=[
