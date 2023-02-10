@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.2.2](https://github.com/DCsunset/concurrent-ssh/compare/v0.2.1...v0.2.2) (2023-02-10)
+
+
+### Bug Fixes
+
+* add min python version in setup.py ([07d24ed](https://github.com/DCsunset/concurrent-ssh/commit/07d24ed5441e4f660a32320d5bc5680212615b6d))
+
 ## [0.2.1](https://github.com/DCsunset/concurrent-ssh/compare/v0.1.0...v0.2.1) (2023-02-06)
 
 
