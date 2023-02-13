@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.3.1](https://github.com/DCsunset/concurrent-ssh/compare/v0.3.0...v0.3.1) (2023-02-13)
+
+
+### Bug Fixes
+
+* strip whitespaces and empty lines in host file ([75ec007](https://github.com/DCsunset/concurrent-ssh/commit/75ec0070d5f5d3c24e36d6c105990ac91887069e))
+
 ## [0.3.0](https://github.com/DCsunset/concurrent-ssh/compare/v0.2.2...v0.3.0) (2023-02-13)
 
 
