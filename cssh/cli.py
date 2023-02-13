@@ -40,7 +40,12 @@ async def main():
 	hosts = []
 	if args.file is not None:
 		with open(args.file, "r") as f:
-			hosts = f.read().splitlines()
+			for line in f:
+				# strip whitespaces
+				h = line.strip()
+				if h:
+					hosts.append(h)
+
 	if args.hosts is not None:
 		hosts.extend(args.hosts)
 	
