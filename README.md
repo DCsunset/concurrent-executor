@@ -23,8 +23,10 @@ Use `-H` or `--hosts` to specify the hosts to run the commands on:
 
 ```sh
 cssh -H <host1> <host2> .... <host_n> -- <command>
-# Or pass extra ssh options
+# pass extra ssh options
 cssh -o="-q -4" -H <host1> <host2> .... <host_n> -- <command>
+# read hosts from file
+cssh -f hosts.txt -- <command>
 ```
 
 Note that `--` is necessary to separate the options and the command.

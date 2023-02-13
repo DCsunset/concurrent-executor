@@ -30,13 +30,25 @@ async def main():
 	parser = argparse.ArgumentParser(
 		description="Executing commands using SSH concurrently on multiple hosts",
 	)
-	parser.add_argument("-H", "--hosts", nargs="+", required=True, help="a list of hosts to execute command on")
+	parser.add_argument("-f", "--file", help="a file where each line specifies a host to execute command on")
+	parser.add_argument("-H", "--hosts", nargs="+", help="a list of hosts to execute command on (appended to the host list in file if both specified)")
 	parser.add_argument("-o", "--options", default="", help="extra options passed to ssh command. use a single string")
 	parser.add_argument("cmd", nargs="+", help="command to run")
 	parser.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
 	args = parser.parse_args()
 
-	executor = SshExecutor(args.hosts, args.options)
+	hosts = []
+	if args.file is not None:
+		with open(args.file, "r") as f:
+			hosts = f.read().splitlines()
+	if args.hosts is not None:
+		hosts.extend(args.hosts)
+	
+	if len(hosts) == 0:
+		err_console.print("Error: no host specified")
+		sys.exit(1)
+
+	executor = SshExecutor(hosts, args.options)
 	await executor.run(" ".join(args.cmd))
 	
 	def signal_callback(counter):
@@ -59,7 +71,7 @@ async def main():
 
 	# The max host length (for padding)
 	host_len = 0
-	for h in args.hosts:
+	for h in hosts:
 		if len(h) > host_len:
 			host_len = len(h)
 	
