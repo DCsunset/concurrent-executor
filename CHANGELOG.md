@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.3.0](https://github.com/DCsunset/concurrent-ssh/compare/v0.2.2...v0.3.0) (2023-02-13)
+
+
+### Features
+
+* support read hosts from file ([9cd47a0](https://github.com/DCsunset/concurrent-ssh/commit/9cd47a00e1ae1ea1985879f6c367a285e60d967f))
+
 ## [0.2.2](https://github.com/DCsunset/concurrent-ssh/compare/v0.2.1...v0.2.2) (2023-02-10)
 
 
