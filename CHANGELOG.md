@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.0.0](https://github.com/DCsunset/concurrent-executor/compare/v0.3.1...v1.0.0) (2023-02-17)
+
+
+### ⚠ BREAKING CHANGES
+
+* rename package to concurrent-executor
+* extract general Executor class and add bin option
+
+### Features
+
+* add cexec to execute arbitrary command using Executor ([2d9e3f3](https://github.com/DCsunset/concurrent-executor/commit/2d9e3f31859b5d00dac989f07a1e9826ebe12ca0))
+* extract general Executor class and add bin option ([f3e87d0](https://github.com/DCsunset/concurrent-executor/commit/f3e87d0658c9db8ec0ea0f38db1e5768feaec641))
+* rename package to concurrent-executor ([91b4ee3](https://github.com/DCsunset/concurrent-executor/commit/91b4ee39061c062346705accdb412b8c72e50241))
+* support string interpolation for ssh command ([4645a27](https://github.com/DCsunset/concurrent-executor/commit/4645a2743c1e5a5ed8f1ca667c81730b1c6916c1))
+* support template command in Executor ([f98de94](https://github.com/DCsunset/concurrent-executor/commit/f98de945bf25ce7ef1d712845327f0a1fb60f9c5))
+
+
+### Bug Fixes
+
+* remove default template command and add default values to help message ([52f640a](https://github.com/DCsunset/concurrent-executor/commit/52f640ae73989fb101c7c2e1b38e0526642164fd))
+
 ## [0.3.1](https://github.com/DCsunset/concurrent-executor/compare/v0.3.0...v0.3.1) (2023-02-13)
 
 
