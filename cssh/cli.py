@@ -119,3 +119,47 @@ async def cssh_main():
 		stderr_transformer=lambda i, out: f"[bright_black]{hosts[i]:{host_len}}[/bright_black] [bright_red]|[/bright_red] {out}",
 	)
 	
+
+# concurrent exec
+async def cexec_main():
+	parser = argparse.ArgumentParser(
+		description="Executing multiple commands concurrently using template",
+	)
+	parser.add_argument("-f", "--file", help="a file where each line specifies a variable to use in template command")
+	parser.add_argument("-V", "--vars", nargs="+", help="a list of variables used in the template command (appended to the variable list in file if both specified)")
+	parser.add_argument("template", default="{}", nargs="+", help="template command (each variable generates an individual command)")
+	parser.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
+	args = parser.parse_args()
+
+	variables = []
+	if args.file is not None:
+		with open(args.file, "r") as f:
+			for line in f:
+				# strip whitespaces
+				h = line.strip()
+				if h:
+					variables.append(h)
+
+	if args.vars is not None:
+		variables.extend(args.vars)
+	
+	if len(variables) == 0:
+		err_console.print("Error: no variable specified")
+		sys.exit(1)
+
+	# The max var length (for padding)
+	var_len = 0
+	for v in variables:
+		if len(v) > var_len:
+			var_len = len(v)
+
+	executor = Executor(variables)
+
+	await executor.run(" ".join(args.template))
+
+	return await handle_executor(
+		executor,
+		stdout_transformer=lambda i, out: f"[bright_black]{variables[i]:{var_len}} |[/bright_black] {out}",
+		stderr_transformer=lambda i, out: f"[bright_black]{variables[i]:{var_len}}[/bright_black] [bright_red]|[/bright_red] {out}",
+	)
+		
