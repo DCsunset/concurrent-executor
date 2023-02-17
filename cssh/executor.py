@@ -17,24 +17,25 @@ from typing import Iterable, List
 from aiostream import stream
 
 """
-Execute multiple shell commands concurrently
+Execute multiple shell commands concurrently using template
 """
 class Executor:
-	def __init__(self):
+	def __init__(self, variables: Iterable[str]):
 		self.processes = []
+		self.variables = variables
 	
 	"""
-	Run commands concurrently
+	Run commands concurrently using template
 	"""
-	async def run(self, commands: Iterable[str]):
+	async def run(self, template: str = "{}"):
 		self.processes = await asyncio.gather(
 			# create subprocess for each command
-			*map(lambda command: asyncio.subprocess.create_subprocess_shell(
-				f"{command}",
+			*map(lambda variable: asyncio.subprocess.create_subprocess_shell(
+				template.format(variable),
 				stdin=asyncio.subprocess.PIPE,
 				stdout=asyncio.subprocess.PIPE,
 				stderr=asyncio.subprocess.PIPE
-			), commands)
+			), self.variables)
 		)
 		
 	"""
@@ -145,8 +146,7 @@ Execute multiple ssh commands concurrently
 """
 class SshExecutor(Executor):
 	def __init__(self, hosts: Iterable[str], sshOptions: str = "", sshBin: str = "ssh"):
-		Executor.__init__(self)
-		self.hosts = hosts
+		Executor.__init__(self, hosts)
 		self.sshOptions = sshOptions
 		self.sshBin = sshBin
 	
@@ -154,7 +154,4 @@ class SshExecutor(Executor):
 	Run ssh commands concurrently
 	"""
 	async def run(self, command: str):
-		await Executor.run(self, map(lambda host:
-			f"{self.sshBin} {host} {self.sshOptions} -- {command}",
-			self.hosts
-		))
+		await Executor.run(self, f"{self.sshBin} {{}} {self.sshOptions} -- {command}")
