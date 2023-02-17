@@ -154,4 +154,4 @@ class SshExecutor(Executor):
 	Run ssh commands concurrently
 	"""
 	async def run(self, command: str):
-		await Executor.run(self, f"{self.sshBin} {{}} {self.sshOptions} -- {command}")
+		await Executor.run(self, f"{self.sshBin} {{0}} {self.sshOptions} -- {command}")

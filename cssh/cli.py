@@ -79,7 +79,7 @@ async def cssh_main():
 	parser.add_argument("-f", "--file", help="a file where each line specifies a host to execute command on")
 	parser.add_argument("-H", "--hosts", nargs="+", help="a list of hosts to execute command on (appended to the host list in file if both specified)")
 	parser.add_argument("-o", "--options", default="", help="extra options passed to ssh command. use a single string")
-	parser.add_argument("cmd", nargs="+", help="command to run")
+	parser.add_argument("cmd", nargs="+", help="command to run (can use placeholder `{0}` for the host name)")
 	parser.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
 	args = parser.parse_args()
 
@@ -123,7 +123,7 @@ async def cssh_main():
 # concurrent exec
 async def cexec_main():
 	parser = argparse.ArgumentParser(
-		description="Executing multiple commands concurrently using template",
+		description="Executing multiple commands concurrently using template command",
 	)
 	parser.add_argument("-f", "--file", help="a file where each line specifies a variable to use in template command")
 	parser.add_argument("-V", "--vars", nargs="+", help="a list of variables used in the template command (appended to the variable list in file if both specified)")
