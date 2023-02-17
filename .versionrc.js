@@ -10,7 +10,7 @@ function writeVersion(contents, version) {
 }
 
 const tracker = {
-	filename: "cssh/_version.py",
+	filename: "concurrent_executor/_version.py",
 	updater: {
 		readVersion,
 		writeVersion

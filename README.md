@@ -1,15 +1,15 @@
-# concurrent-ssh
+# concurrent-executor
 
-[![PyPI](https://img.shields.io/pypi/v/concurrent-ssh)](https://pypi.org/project/concurrent-ssh/)
+[![PyPI](https://img.shields.io/pypi/v/concurrent-executor)](https://pypi.org/project/concurrent-executor/)
 
 Executing commands with ssh concurrently on multiple hosts using asyncio
 
 ## Installation
 
 ```sh
-pip install concurrent-ssh
+pip install concurrent-executor
 # Or from the latest GitHub version
-pip install git+https://github.com/DCsunset/concurrent-ssh
+pip install git+https://github.com/DCsunset/concurrent-executor
 
 ```
 
@@ -45,7 +45,7 @@ It can also be used as a library:
 
 ```python
 import asyncio
-from cssh.executor import SshExecutor
+from concurrent_executor.executor import SshExecutor
 
 async def main():
   hosts = ["host1", "host2"]
@@ -87,7 +87,7 @@ To deactivate, run `deactivate`.
 
 This project is licensed under AGPL-3.0. Copyright notice:
 
-    concurrent-ssh
+    concurrent-executor
     Copyright (C) 2023 DCsunset
 
     This program is free software: you can redistribute it and/or modify

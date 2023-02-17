@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# concurrent-ssh
+# concurrent-executor
 # Copyright (C) 2023 DCsunset
 #
 # This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,7 @@ directory = Path(__file__).resolve().parent
 # add the root path of this project
 sys.path.insert(0, str(directory.parent))
 
-from cssh.cli import cssh_main
+from concurrent_executor.cli import cssh_main
 import asyncio
 
 ret = asyncio.run(cssh_main())

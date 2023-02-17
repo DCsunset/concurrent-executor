@@ -1,4 +1,4 @@
-# concurrent-ssh
+# concurrent-executor
 # Copyright (C) 2023 DCsunset
 #
 # This program is free software: you can redistribute it and/or modify
@@ -19,7 +19,7 @@ repo_dir = Path(__file__).parent.absolute()
 
 # get version
 main_ns = {}
-with open(repo_dir.joinpath("cssh", "_version.py")) as f:
+with open(repo_dir.joinpath("concurrent_executor", "_version.py")) as f:
 	exec(f.read(), main_ns)
 
 # Long description
@@ -28,20 +28,19 @@ with open(readme, "r") as f:
 	long_description = f.read()
 
 setup(
-	name="concurrent-ssh",
+	name="concurrent-executor",
 	version=main_ns["__version__"],
 	description="Executing commands using SSH concurrently on multiple hosts",
-	package_dir={"cssh": "cssh"},
 	long_description=long_description,
 	long_description_content_type='text/markdown',
 	author="DCsunset",
 	author_email='DCsunset@protonmail.com',
 	license="AGPL-3.0",
-	url="https://github.com/DCsunset/concurrent-ssh",
+	url="https://github.com/DCsunset/concurrent-executor",
 	install_requires=["aiostream", "rich"],
-	python_requires=">=3.9",
-	packages=["cssh"],
-	scripts=["bin/cssh"],
+	packages=["concurrent_executor"],
+	package_dir={"concurrent_executor": "concurrent_executor"},
+	scripts=["bin/cssh", "bin/cexec"],
 	classifiers=[
 		"Environment :: Console",
 		"Topic :: System :: Networking",
