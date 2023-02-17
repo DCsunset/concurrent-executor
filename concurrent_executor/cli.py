@@ -73,6 +73,7 @@ async def handle_executor(executor: Executor, stdout_transformer, stderr_transfo
 # concurrent ssh
 async def cssh_main():
 	parser = argparse.ArgumentParser(
+		formatter_class=argparse.ArgumentDefaultsHelpFormatter,
 		description="Executing commands using SSH concurrently on multiple hosts",
 	)
 	parser.add_argument("-b", "--bin", default="ssh", help="custom binary executable to use for ssh")
@@ -123,11 +124,12 @@ async def cssh_main():
 # concurrent exec
 async def cexec_main():
 	parser = argparse.ArgumentParser(
+		formatter_class=argparse.ArgumentDefaultsHelpFormatter,
 		description="Executing multiple commands concurrently using template command",
 	)
 	parser.add_argument("-f", "--file", help="a file where each line specifies a variable to use in template command")
 	parser.add_argument("-V", "--vars", nargs="+", help="a list of variables used in the template command (appended to the variable list in file if both specified)")
-	parser.add_argument("template", default="{}", nargs="+", help="template command (each variable generates an individual command)")
+	parser.add_argument("template", nargs="+", help="template command (each variable generates an individual command)")
 	parser.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
 	args = parser.parse_args()
 

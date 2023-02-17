@@ -27,7 +27,7 @@ class Executor:
 	"""
 	Run commands concurrently using template
 	"""
-	async def run(self, template: str = "{}"):
+	async def run(self, template: str):
 		self.processes = await asyncio.gather(
 			# create subprocess for each command
 			*map(lambda variable: asyncio.subprocess.create_subprocess_shell(
