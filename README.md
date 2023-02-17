@@ -13,20 +13,28 @@ pip install git+https://github.com/DCsunset/concurrent-executor
 
 ```
 
-## Usage
+## CLI Usage
 
-**Note**: ensure that `ssh` is in your `PATH` environment variables.
+All the following tools can handle signals as follows:
 
-### CLI
+* Upon receiving one `SIGINT` (including keyboard interrupt) or `SIGTERM`, the program will send `SIGTERM` to all spawned processes.
+* Upon receiving more than one of them, the program will instead send `SIGKILL` to kill all spawned processes.
+
+### cssh
+
+`cssh` is a command line tool provided by this package.
+It is used to executing commands concurrently on remote servers vis SSH.
 
 Use `-H` or `--hosts` to specify the hosts to run the commands on:
 
 ```sh
-cssh -H <host1> <host2> .... <host_n> -- <command>
+cssh -H host1 host2 ... host_n -- command
 # pass extra ssh options
-cssh -o="-q -4" -H <host1> <host2> .... <host_n> -- <command>
+cssh -o="-q -4" -H host1 host2 ... host_n -- command
 # read hosts from file
-cssh -f hosts.txt -- <command>
+cssh -f hosts.txt -- command
+# string interpolation (to include host name in command by {0})
+cssh -H host1 host2 -- command --host {0}
 ```
 
 Note that `--` is necessary to separate the options and the command.
@@ -34,10 +42,26 @@ For `-o/--options` to work correctly, use `=` to prevent it from being parsed as
 
 The standard input (stdin) of the `cssh` process is piped to the stdin of every spawned processes.
 
-`cssh` can handle signals as follows:
+For more details, see `cssh -h`.
 
-* Upon receiving one `SIGINT` (including keyboard interrupt) or `SIGTERM`, `cssh` will send `SIGTERM` to all spawned processes.
-* Upon receiving more than one of them, `cssh` will instead send `SIGKILL` to kill all spawned processes.
+### cexec
+
+`cexec` is another command line tool provided by this package.
+It is used to execute arbitrary shell commands concurrently using template (string interpolation in Python).
+
+The command itself can container placeholder in strings: (See [Python string interpolation](https://peps.python.org/pep-0498/) for more detail.)
+
+```sh
+# The variables are a, b, c in the template command
+# This command creates 3 directories and write to a file in each directory
+cexec -V a b c -- "mkdir {0} && echo 1 > {0}/out"
+# Read variables from a file
+cexec -f vars.txt -- "mkdir {0} && echo 1 > {0}/out"
+# Run different commands directly
+cexec -V "cmd1" "cmd2" "cmd3" -- "{}"
+```
+
+For more details, see `cexec -h`.
 
 ### Library
 
@@ -54,8 +78,8 @@ async def main():
   await executor.run("some_command --test")
 
   # access stdout for all hosts (or stderr)
-  async for host, out in executor.stdout:
-    print(f"{host}: {out}")
+  async for index, out in executor.stdout:
+    print(f"{host[index]}: {out}")
 
   # wait until all finished
   ret_codes = await executor.wait()
@@ -63,7 +87,7 @@ async def main():
 asyncio.run(main())
 ```
 
-See more usage in `cssh/cli.py`.
+See more usage in `concurrent_executor/cli.py`.
 
 ## Development
 
