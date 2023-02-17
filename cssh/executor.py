@@ -13,36 +13,35 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import asyncio
+from typing import Iterable, List
 from aiostream import stream
 
-class SshExecutor:
-	"""
-	Execute multiple ssh commands in parallel
-	"""
-	def __init__(self, hosts: list[str], sshOptions: str = ""):
-		self.hosts = hosts
-		self.sshOptions = sshOptions
+"""
+Execute multiple shell commands concurrently
+"""
+class Executor:
+	def __init__(self):
 		self.processes = []
 	
 	"""
-	Run ssh commands in parallel
+	Run commands concurrently
 	"""
-	async def run(self, command: str):
+	async def run(self, commands: Iterable[str]):
 		self.processes = await asyncio.gather(
-			# create subprocess for each host
-			*map(lambda h: asyncio.subprocess.create_subprocess_shell(
-				f"ssh {h} {self.sshOptions} -- {command}",
+			# create subprocess for each command
+			*map(lambda command: asyncio.subprocess.create_subprocess_shell(
+				f"{command}",
 				stdin=asyncio.subprocess.PIPE,
 				stdout=asyncio.subprocess.PIPE,
 				stderr=asyncio.subprocess.PIPE
-			), self.hosts)
+			), commands)
 		)
 		
 	"""
 	Wait for all commands to finish
 	Return a list of return codes
 	"""
-	async def wait(self) -> list[int]:
+	async def wait(self) -> List[int]:
 		return await asyncio.gather(
 			*map(lambda p: p.wait(), self.processes)
 		)
@@ -90,31 +89,31 @@ class SshExecutor:
 
 	
 	"""
-	Get a stream (async iterator) to lines in stdout: (host, stdout_line)
+	Get a stream (async iterator) to lines in stdout: (index, stdout_line)
 	"""
 	def get_stdout(self):
 		return stream.merge(
 			*map(
-				lambda h, p: stream.map(
+				lambda i, p: stream.map(
 					p.stdout,
-					lambda v: (h, v)
+					lambda v: (i, v)
 				),
-				self.hosts,
+				range(len(self.processes)),
 				self.processes
 			)
 		)
 		
 	"""
-	Get an async iterator to lines in stderr: (host, stderr_line)
+	Get an async iterator to lines in stderr: (index, stderr_line)
 	"""
 	def get_stderr(self):
 		return stream.merge(
 			*map(
-				lambda h, p: stream.map(
+				lambda i, p: stream.map(
 					p.stderr,
-					lambda v: (h, v)
+					lambda v: (i, v)
 				),
-				self.hosts,
+				range(len(self.processes)),
 				self.processes
 			)
 		)
@@ -140,3 +139,22 @@ class SshExecutor:
 		for p in self.processes:
 			p.send_signal(sig)
 
+
+"""
+Execute multiple ssh commands concurrently
+"""
+class SshExecutor(Executor):
+	def __init__(self, hosts: Iterable[str], sshOptions: str = "", sshBin: str = "ssh"):
+		Executor.__init__(self)
+		self.hosts = hosts
+		self.sshOptions = sshOptions
+		self.sshBin = sshBin
+	
+	"""
+	Run ssh commands concurrently
+	"""
+	async def run(self, command: str):
+		await Executor.run(self, map(lambda host:
+			f"{self.sshBin} {host} {self.sshOptions} -- {command}",
+			self.hosts
+		))

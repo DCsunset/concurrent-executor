@@ -21,8 +21,8 @@ directory = Path(__file__).resolve().parent
 # add the root path of this project
 sys.path.insert(0, str(directory.parent))
 
-from cssh.cli import main
+from cssh.cli import cssh_main
 import asyncio
 
-ret = asyncio.run(main())
+ret = asyncio.run(cssh_main())
 sys.exit(ret)

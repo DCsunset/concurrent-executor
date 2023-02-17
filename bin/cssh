@@ -14,9 +14,9 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
-from cssh.cli import main
+from cssh.cli import cssh_main
 import asyncio
 import sys
 
-ret = asyncio.run(main())
+ret = asyncio.run(cssh_main())
 sys.exit(ret)
