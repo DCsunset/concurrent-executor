@@ -2,7 +2,7 @@
 
 [![PyPI](https://img.shields.io/pypi/v/concurrent-executor)](https://pypi.org/project/concurrent-executor/)
 
-Executing commands with ssh concurrently on multiple hosts using asyncio
+Executing multiple commands concurrently using Python asyncio
 
 ## Installation
 
