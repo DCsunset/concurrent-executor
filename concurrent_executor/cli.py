@@ -23,10 +23,11 @@ import argparse
 import asyncio
 import sys
 
+console = Console(highlight=False)
+err_console = Console(highlight=False, stderr=True)
+	
 # handle I/O, signals and return codes
 async def handle_executor(executor: Executor, stdout_transformer, stderr_transformer):
-	console = Console(highlight=False)
-	err_console = Console(highlight=False, stderr=True)
 	
 	def signal_callback(counter):
 		if counter == 1:
