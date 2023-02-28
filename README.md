@@ -35,6 +35,10 @@ cssh -o="-q -4" -H host1 host2 ... host_n -- command
 cssh -f hosts.txt -- command
 # string interpolation (to include host name in command by {0})
 cssh -H host1 host2 -- command --host {0}
+# pipe to stdin
+echo "yes" | cssh -H host1 host2 -- command 
+# Pipe file content to stdin
+cssh -H host1 host2 -- command < input.txt
 ```
 
 Note that `--` is necessary to separate the options and the command.
@@ -59,6 +63,8 @@ cexec -V a b c -- "mkdir {0} && echo 1 > {0}/out"
 cexec -f vars.txt -- "mkdir {0} && echo 1 > {0}/out"
 # Run different commands directly
 cexec -V "cmd1" "cmd2" "cmd3" -- "{}"
+# pipe to stdin
+echo "yes" | cexec -V a b c -- "cat -"
 ```
 
 For more details, see `cexec -h`.
