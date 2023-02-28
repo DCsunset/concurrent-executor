@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.1.0](https://github.com/DCsunset/concurrent-executor/compare/v1.0.1...v1.1.0) (2023-02-28)
+
+
+### Features
+
+* support reading from pipe-incompatiable io ([3126363](https://github.com/DCsunset/concurrent-executor/commit/312636337e822282554978a38dd1d1ff080e405c))
+
 ## [1.0.1](https://github.com/DCsunset/concurrent-executor/compare/v1.0.0...v1.0.1) (2023-02-18)
 
 
