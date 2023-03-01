@@ -37,7 +37,7 @@ setup(
 	author_email='DCsunset@protonmail.com',
 	license="AGPL-3.0",
 	url="https://github.com/DCsunset/concurrent-executor",
-	install_requires=["aiostream", "rich"],
+	install_requires=["aiostream", "aioconsole", "rich"],
 	packages=["concurrent_executor"],
 	package_dir={"concurrent_executor": "concurrent_executor"},
 	scripts=["bin/cssh", "bin/cexec"],
