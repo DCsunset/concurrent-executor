@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.1.1](https://github.com/DCsunset/concurrent-executor/compare/v1.1.0...v1.1.1) (2023-03-01)
+
+
+### Bug Fixes
+
+* add aioconsole to pypi dependencies ([d2aea9b](https://github.com/DCsunset/concurrent-executor/commit/d2aea9b5a34e2b03235908c9668bba7196804935))
+
 ## [1.1.0](https://github.com/DCsunset/concurrent-executor/compare/v1.0.1...v1.1.0) (2023-02-28)
 
 
