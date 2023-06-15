@@ -25,10 +25,21 @@ import sys
 
 console = Console(highlight=False)
 err_console = Console(highlight=False, stderr=True)
+
+async def output_messages(output_queue: asyncio.Queue, stdout_transformer, stderr_transformer):
+	while True:
+		msg = await output_queue.get()
+		if msg == None:
+			break
+		index, out, is_stdout = msg
+		if is_stdout:
+			console.print(stdout_transformer(index, out))
+		else:
+			err_console.print(stderr_transformer(index, out))
+
 	
 # handle I/O, signals and return codes
-async def handle_executor(executor: Executor, stdout_transformer, stderr_transformer):
-	
+async def handle_executor(executor: Executor, output_queue: asyncio.Queue()):
 	def signal_callback(counter):
 		if counter == 1:
 			console.print(f"[bright_yellow]Terminating all processes...[/bright_yellow]")
@@ -52,10 +63,10 @@ async def handle_executor(executor: Executor, stdout_transformer, stderr_transfo
 		async for output, is_stdout in s:
 			index, out = output
 			out = out.decode().rstrip()
-			if is_stdout:
-				console.print(stdout_transformer(index, out))
-			else:
-				err_console.print(stderr_transformer(index, out))
+			await output_queue.put((index, out, is_stdout))
+			
+	# end of output
+	await output_queue.put(None)
 	
 	# return code
 	ret = 0
@@ -112,15 +123,20 @@ async def cssh_main():
 		sshOptions=args.options,
 		sshBin=args.bin
 	)
-
 	await executor.run(" ".join(args.cmd))
-
-	return await handle_executor(
-		executor,
+	
+	# use another task for output to preventing non-blocking IO error
+	# (store it quickly in the queue to prevent output from overflowing)
+	output_queue = asyncio.Queue()
+	output_task = asyncio.create_task(output_messages(
+		output_queue,
 		stdout_transformer=lambda i, out: f"[bright_black]{hosts[i]:{host_len}} |[/bright_black] {out}",
 		stderr_transformer=lambda i, out: f"[bright_black]{hosts[i]:{host_len}}[/bright_black] [bright_red]|[/bright_red] {out}",
-	)
-	
+	))
+
+	ret = await handle_executor(executor, output_queue)
+	await output_task
+	return ret
 
 # concurrent exec
 async def cexec_main():
@@ -157,12 +173,18 @@ async def cexec_main():
 			var_len = len(v)
 
 	executor = Executor(variables)
-
 	await executor.run(" ".join(args.template))
 
-	return await handle_executor(
-		executor,
+	# use another task for output to preventing non-blocking IO error
+	# (store it quickly in the queue to prevent output from overflowing)
+	output_queue = asyncio.Queue()
+	output_task = asyncio.create_task(output_messages(
+		output_queue,
 		stdout_transformer=lambda i, out: f"[bright_black]{variables[i]:{var_len}} |[/bright_black] {out}",
 		stderr_transformer=lambda i, out: f"[bright_black]{variables[i]:{var_len}}[/bright_black] [bright_red]|[/bright_red] {out}",
-	)
-		
+	))
+	
+	ret = await handle_executor(executor, output_queue)
+	await output_task
+	return ret
+	
